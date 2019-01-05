@@ -10,6 +10,7 @@ import { LoadingController, IonicPage, AlertController } from "ionic-angular";
 import { HttpClient } from "@angular/common/http";
 //import { Observable } from "rxjs/Observable";
 import { AuthService } from "./../../services/auth.service";
+import { PhotoLibrary } from "@ionic-native/photo-library";
 
 @IonicPage()
 @Component({
@@ -18,6 +19,7 @@ import { AuthService } from "./../../services/auth.service";
 })
 export class HomePage {
   myPhoto: string;
+  public myPhonePictures = [];
 
   constructor(
     private camera: Camera,
@@ -26,8 +28,41 @@ export class HomePage {
     private file: File,
     private loadingCtrl: LoadingController,
     public auth: AuthService,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    private photoLibrary: PhotoLibrary
   ) {}
+
+  ionViewDidLoad() {
+    const urls = [];
+
+    this.photoLibrary
+      .requestAuthorization()
+      .then(() => {
+        this.photoLibrary.getLibrary().subscribe({
+          next: library => {
+            library.forEach(function(libraryItem) {
+              urls.push(libraryItem.photoURL);
+            });
+          },
+
+          error: err => {
+            console.log("could not get photos");
+          },
+
+          complete: () => {
+            console.log(
+              "Fotos del celular cargadas, esperando transferencia..."
+            );
+            this.myPhonePictures = urls;
+          }
+        });
+      })
+      .catch(err =>
+        console.log(
+          "Aceptar en el celular los permisos de transferencia de archivos"
+        )
+      );
+  }
 
   async pictureFromCamera() {
     const options: CameraOptions = {

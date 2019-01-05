@@ -17,45 +17,50 @@
 
       <!-- PHOTO -->
       <img [src]="myPhoto" *ngIf="myPhoto" alt="Image" />
-
-      <ion-footer>
-        <ion-grid>
-          <ion-row>
-            <ion-col col-6>
-              <button ion-button block color="dark" class="disable-hover button button-ios button-default button-default-ios button-ios-dark"
-                (click)="pictureFromCamera()">
-                <span class="button-inner">
-                  Toma una foto
-                  <ion-icon name="ios-camera" role="img" class="icons" aria-label="ios-camera"></ion-icon>
-                </span>
-              </button>
-            </ion-col>
-          
-            <ion-col col-6>
-              <button ion-button block color="dark" class="disable-hover button button-ios button-default button-default-ios button-ios-dark"
-                (click)="pictureFromGallery()">
-                <span class="button-inner">
-                  Galería
-                  <ion-icon name="image" role="img" class="icons" aria-label="image"></ion-icon>
-                </span>
-              </button>
-            </ion-col>
-          
-            <ion-col col-12>
-              <button ion-button full color="dark" class="disable-hover button button-ios button-default button-default-ios button-ios-dark"
-                (click)="uploadImage()">
-                <span class="button-inner">
-                  Subir foto
-                  <ion-icon name="md-cloud-upload" role="img" class="icons" aria-label="upload"></ion-icon>
-                </span>
-              </button>
-              <button ion-button block color="danger" (click)="auth.logout()">Log Out</button>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-footer>
-     
+       <!-- View Image gallery -->
+       <ion-slides class="image-slider" loop="true" effect="coverflow">
+          <ion-slide *ngFor="let img of myPhonePictures">
+            <img [src]="img | safe" alt="photos" class="thumb-img" imageViewer>
+          </ion-slide>
+        </ion-slides>
     </ng-template>
   </ng-template>
 
 </ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6>
+        <button ion-button block color="dark" class="disable-hover button button-ios button-default button-default-ios button-ios-dark"
+          (click)="pictureFromCamera()">
+          <span class="button-inner">
+            Toma una foto
+            <ion-icon name="ios-camera" role="img" class="icons" aria-label="ios-camera"></ion-icon>
+          </span>
+        </button>
+      </ion-col>
+
+      <ion-col col-6>
+        <button ion-button block color="dark" class="disable-hover button button-ios button-default button-default-ios button-ios-dark"
+          (click)="pictureFromGallery()">
+          <span class="button-inner">
+            Galería
+            <ion-icon name="image" role="img" class="icons" aria-label="image"></ion-icon>
+          </span>
+        </button>
+      </ion-col>
+
+      <ion-col col-12>
+        <button ion-button full color="dark" class="disable-hover button button-ios button-default button-default-ios button-ios-dark"
+          (click)="uploadImage()">
+          <span class="button-inner">
+            Subir foto
+            <ion-icon name="md-cloud-upload" role="img" class="icons" aria-label="upload"></ion-icon>
+          </span>
+        </button>
+        <button ion-button block color="danger" (click)="auth.logout()">Log Out</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>
